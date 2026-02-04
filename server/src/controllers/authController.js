@@ -24,7 +24,6 @@ export const signup = async (req, res) => {
       message: "Signup Successful",
       user,
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -61,18 +60,19 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.json({
       message: "Login Success",
       user,
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 export const logout = (req, res) => {
   res.cookie("token", "", {
@@ -83,15 +83,13 @@ export const logout = (req, res) => {
   res.json({ message: "Logout Success" });
 };
 
-
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
 
     res.json({
-      user
+      user,
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
