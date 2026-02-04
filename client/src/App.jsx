@@ -22,6 +22,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ManageDoctors from "./pages/admin/ManageDoctors";
 import ManageAppointments from "./pages/admin/ManageAppointments";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
