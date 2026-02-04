@@ -30,6 +30,10 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await api.post("/api/auth/login", data);
       setUser(res.data.user);
+      // Save token for Authorization header (helps when cookies are blocked)
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
+      }
       toast.success("Login Successful");
       return res.data.user;
     } catch (err) {
@@ -43,6 +47,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await api.post("/api/auth/logout");
       setUser(null);
+      localStorage.removeItem("authToken");
       toast.success("Logged Out Successfully");
     } catch (err) {
       toast.error("Logout Failed");

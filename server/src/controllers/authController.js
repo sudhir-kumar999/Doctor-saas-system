@@ -90,11 +90,14 @@ export const login = async (req, res) => {
       cookieOptions.sameSite = "lax";
     }
 
+    // Still set cookie (for web)
     res.cookie("token", token, cookieOptions);
 
+    // Also return token in body so client can store it if needed
     res.json({
       message: "Login Success",
       user,
+      token,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

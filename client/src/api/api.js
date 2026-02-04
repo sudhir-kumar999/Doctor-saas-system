@@ -12,6 +12,15 @@ const api = axios.create({
   },
 });
 
+// Attach Authorization header if token stored in localStorage
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("authToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Global Response Interceptor
 api.interceptors.response.use(
   (response) => response,
