@@ -48,7 +48,7 @@ const DoctorsList = () => {
 
         {/* Header Section */}
         <div className="mb-8">
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2 lg:mt-4">
             Available Doctors
           </h1>
           <p className="text-gray-600">
