@@ -18,6 +18,7 @@ const DoctorsList = () => {
       setDoctors(res.data.doctors);
     } catch (err) {
       toast.error("Failed to load doctors");
+      console.log(err)
     } finally {
       setLoading(false);
     }

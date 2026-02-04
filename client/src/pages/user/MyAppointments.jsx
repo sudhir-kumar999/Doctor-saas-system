@@ -17,6 +17,7 @@ const MyAppointments = () => {
       setAppointments(res.data.appointments);
     } catch (err) {
       toast.error("Failed to load appointments");
+      console.log(err)
     } finally {
       setLoading(false);
     }

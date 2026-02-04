@@ -1,21 +1,29 @@
-import { createContext, useRef } from "react";
+import { createContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
 export const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
 
-  const socketRef = useRef(null);
+  const [socket, setSocket] = useState(null);
 
-  if (!socketRef.current) {
-    socketRef.current = io("http://localhost:5000", {
+  useEffect(() => {
+
+    const newSocket = io("http://localhost:5000", {
       withCredentials: true,
       transports: ["websocket"],
     });
-  }
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+
+  }, []);
 
   return (
-    <ChatContext.Provider value={{ socket: socketRef.current }}>
+    <ChatContext.Provider value={{ socket }}>
       {children}
     </ChatContext.Provider>
   );
