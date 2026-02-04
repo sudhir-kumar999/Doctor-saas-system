@@ -12,7 +12,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://doctor-saas-system.onrender.com",
+    origin: "https://doctor-saas-systems.onrender.com",
     credentials: true,
   },
 });
