@@ -1,10 +1,15 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 
+// 🔵 SIGNUP FUNCTION
 export const signup = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    let { name, email, password, role } = req.body;
 
+    // 🔥 IMPORTANT – Email ko lowercase me convert
+    email = email.toLowerCase().trim();
+
+    // Check existing user
     const exist = await User.findOne({ email });
 
     if (exist) {
@@ -13,6 +18,7 @@ export const signup = async (req, res) => {
       });
     }
 
+    // Create user with lowercase email
     const user = await User.create({
       name,
       email,
@@ -24,14 +30,19 @@ export const signup = async (req, res) => {
       message: "Signup Successful",
       user,
     });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
+// 🔵 LOGIN FUNCTION
 export const login = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    let { email, password, role } = req.body;
+
+    // 🔥 IMPORTANT – Email ko lowercase me convert
+    email = email.toLowerCase().trim();
 
     const user = await User.findOne({ email });
 
@@ -41,18 +52,21 @@ export const login = async (req, res) => {
       });
     }
 
+    // Password check
     if (user.password !== password) {
       return res.status(400).json({
         message: "Invalid Password",
       });
     }
 
+    // Role check
     if (user.role !== role) {
       return res.status(400).json({
         message: `You are registered as ${user.role}`,
       });
     }
 
+    // Generate token
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET
@@ -69,11 +83,13 @@ export const login = async (req, res) => {
       message: "Login Success",
       user,
     });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
+// 🔵 LOGOUT FUNCTION
 export const logout = (req, res) => {
   res.cookie("token", "", {
     httpOnly: true,
@@ -83,6 +99,7 @@ export const logout = (req, res) => {
   res.json({ message: "Logout Success" });
 };
 
+// 🔵 GET CURRENT USER
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -90,6 +107,7 @@ export const getMe = async (req, res) => {
     res.json({
       user,
     });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
