@@ -14,10 +14,15 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+// Allow both local dev and Render frontend
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://doctor-saas-systems.onrender.com",
+];
+
 app.use(
   cors({
-    origin: "https://doctor-saas-systems.onrender.com",
-    
+    origin: allowedOrigins,
     credentials: true,
   })
 );

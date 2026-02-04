@@ -4,12 +4,14 @@ import { io } from "socket.io-client";
 export const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    // Use same backend base URL as API, with fallback for local dev
+    const SOCKET_URL =
+      import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-    const newSocket = io("https://doctor-saas-system.onrender.com", {
+    const newSocket = io(SOCKET_URL, {
       withCredentials: true,
       transports: ["websocket"],
     });
@@ -19,7 +21,6 @@ export const ChatProvider = ({ children }) => {
     return () => {
       newSocket.disconnect();
     };
-
   }, []);
 
   return (
