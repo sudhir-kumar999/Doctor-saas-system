@@ -155,6 +155,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/* 🔥 MOST IMPORTANT – CATCH ALL ROUTE */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />
