@@ -9,7 +9,7 @@ export const ChatProvider = ({ children }) => {
 
   useEffect(() => {
 
-    const newSocket = io("http://localhost:5000", {
+    const newSocket = io("https://doctor-saas-system.onrender.com", {
       withCredentials: true,
       transports: ["websocket"],
     });

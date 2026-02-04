@@ -17,26 +17,33 @@ const Login = () => {
     try {
       const user = await login({ email, password, role });
 
-      // Role based redirect
+      // 🔥 ROLE BASED REDIRECT – UPDATED LOGIC
       if (user.role === "user") {
         navigate("/user/dashboard");
-      } else {
+      } 
+      else if (user.role === "doctor") {
         navigate("/doctor/dashboard");
+      } 
+      else if (user.role === "admin") {
+        navigate("/admin/dashboard");
       }
 
     } catch (err) {
-      // toast already handled in context
-      console.log(err)
+      console.log(err);
     }
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
+
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded shadow-md w-96"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+
+        <h2 className="text-2xl font-bold mb-4 text-center">
+          Login
+        </h2>
 
         <input
           className="border p-2 w-full mb-3 rounded"
@@ -51,18 +58,22 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
+        {/* 🔥 ROLE SELECTION UPDATED */}
         <select
           className="border p-2 w-full mb-3 rounded"
           onChange={(e) => setRole(e.target.value)}
         >
           <option value="user">User</option>
           <option value="doctor">Doctor</option>
+          <option value="admin">Admin</option>
         </select>
 
         <button className="bg-green-500 text-white p-2 w-full rounded">
           Login
         </button>
+
       </form>
+
     </div>
   );
 };

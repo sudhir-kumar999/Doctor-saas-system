@@ -7,6 +7,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import doctorRoutes from "./src/routes/doctorRoutes.js";
 import appointmentRoutes from "./src/routes/appointmentRoutes.js";
 import chatRoutes from "./src/routes/chatRoutes.js";
+import adminRoutes from "./src/routes/adminRoutes.js";
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     credentials: true,
   })
 );
@@ -26,5 +27,6 @@ app.use("/api/auth", authRoutes);
 // app.use("/api/user", userRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/appointment", appointmentRoutes);
+app.use("/api/admin", adminRoutes);
 
 export default app;

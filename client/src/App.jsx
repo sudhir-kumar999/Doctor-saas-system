@@ -18,6 +18,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 import Appointments from "./pages/doctor/Appointments";
 import DoctorChat from "./pages/doctor/DoctorChat";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ManageUsers from "./pages/admin/ManageUsers";
+import ManageDoctors from "./pages/admin/ManageDoctors";
+import ManageAppointments from "./pages/admin/ManageAppointments";
 
 function App() {
   return (
@@ -90,32 +94,67 @@ function App() {
         /> */}
 
         <Route
-  path="/doctor/dashboard"
-  element={
-    <ProtectedRoute role="doctor">
-      <DoctorDashboard />
-    </ProtectedRoute>
-  }
-/>
+          path="/doctor/dashboard"
+          element={
+            <ProtectedRoute role="doctor">
+              <DoctorDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/doctor/appointments"
-  element={
-    <ProtectedRoute role="doctor">
-      <Appointments />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/doctor/appointments"
+          element={
+            <ProtectedRoute role="doctor">
+              <Appointments />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/doctor/chat"
-  element={
-    <ProtectedRoute role="doctor">
-      <DoctorChat />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/doctor/chat"
+          element={
+            <ProtectedRoute role="doctor">
+              <DoctorChat />
+            </ProtectedRoute>
+          }
+        />
 
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute role="admin">
+              <ManageUsers />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/doctors"
+          element={
+            <ProtectedRoute role="admin">
+              <ManageDoctors />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/appointments"
+          element={
+            <ProtectedRoute role="admin">
+              <ManageAppointments />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
 
       <Footer />
