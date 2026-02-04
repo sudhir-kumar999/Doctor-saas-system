@@ -1,15 +1,29 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { login, user, loading } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
+
+  // If already logged in, keep user on its dashboard
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return;
+
+    if (user.role === "user") {
+      navigate("/user/dashboard", { replace: true });
+    } else if (user.role === "doctor") {
+      navigate("/doctor/dashboard", { replace: true });
+    } else if (user.role === "admin") {
+      navigate("/admin/dashboard", { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

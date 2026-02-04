@@ -5,11 +5,10 @@ import { toast } from "react-toastify";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Check login status on page reload
+  // Check login status on page reload using cookie-based auth
   useEffect(() => {
     checkAuth();
   }, []);
@@ -25,15 +24,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Login Function
+  // Login: rely on httpOnly cookie set by backend
   const login = async (data) => {
     try {
       const res = await api.post("/api/auth/login", data);
       setUser(res.data.user);
-      // Save token for Authorization header (helps when cookies are blocked)
-      if (res.data.token) {
-        localStorage.setItem("authToken", res.data.token);
-      }
       toast.success("Login Successful");
       return res.data.user;
     } catch (err) {
@@ -42,12 +37,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Logout Function
+  // Logout: clear cookie on server
   const logout = async () => {
     try {
       await api.post("/api/auth/logout");
       setUser(null);
-      localStorage.removeItem("authToken");
       toast.success("Logged Out Successfully");
     } catch (err) {
       toast.error("Logout Failed");
@@ -69,3 +63,4 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
