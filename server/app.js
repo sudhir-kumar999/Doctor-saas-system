@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://doctor-saas-systems.onrender.com",
-    methods: ["GET", "POST"],
+    
     credentials: true,
   })
 );
