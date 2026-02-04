@@ -11,6 +11,9 @@ import adminRoutes from "./src/routes/adminRoutes.js";
 
 const app = express();
 
+// Needed for correct HTTPS / secure cookies behind Render proxy
+app.set("trust proxy", 1);
+
 app.use(express.json());
 app.use(cookieParser());
 

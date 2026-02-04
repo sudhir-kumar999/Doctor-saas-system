@@ -71,13 +71,26 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET
     );
 
-    res.cookie("token", token, {
+    // Cookie options: different for local dev vs production
+    const isProd = process.env.NODE_ENV === "production";
+
+    const cookieOptions = {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
-      domain: ".onrender.com", // 🔥 CRITICAL LINE
-    });
+    };
+
+    if (isProd) {
+      // Render (HTTPS, cross-site)
+      cookieOptions.secure = true;
+      cookieOptions.sameSite = "none";
+      // Do NOT force domain; let browser use backend host
+    } else {
+      // Local dev
+      cookieOptions.secure = false;
+      cookieOptions.sameSite = "lax";
+    }
+
+    res.cookie("token", token, cookieOptions);
 
     res.json({
       message: "Login Success",
@@ -90,13 +103,22 @@ export const login = async (req, res) => {
 
 // 🔵 LOGOUT FUNCTION
 export const logout = (req, res) => {
-  res.cookie("token", "", {
+  const isProd = process.env.NODE_ENV === "production";
+
+  const cookieOptions = {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
     expires: new Date(0),
-    domain: ".onrender.com",
-  });
+  };
+
+  if (isProd) {
+    cookieOptions.secure = true;
+    cookieOptions.sameSite = "none";
+  } else {
+    cookieOptions.secure = false;
+    cookieOptions.sameSite = "lax";
+  }
+
+  res.cookie("token", "", cookieOptions);
 
   res.json({ message: "Logout Success" });
 };
