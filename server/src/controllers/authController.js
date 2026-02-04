@@ -30,7 +30,6 @@ export const signup = async (req, res) => {
       message: "Signup Successful",
       user,
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -77,13 +76,13 @@ export const login = async (req, res) => {
       secure: true,
       sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
+      domain: ".onrender.com", // 🔥 CRITICAL LINE
     });
 
     res.json({
       message: "Login Success",
       user,
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -93,7 +92,10 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.cookie("token", "", {
     httpOnly: true,
+    secure: true,
+    sameSite: "none",
     expires: new Date(0),
+    domain: ".onrender.com",
   });
 
   res.json({ message: "Logout Success" });
@@ -107,7 +109,6 @@ export const getMe = async (req, res) => {
     res.json({
       user,
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
