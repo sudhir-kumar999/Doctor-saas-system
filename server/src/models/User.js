@@ -9,6 +9,18 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "doctor", "admin"],
     default: "user",
   },
+   fees: {
+    type: Number,
+    default: 0,
+  },
+
+  specialization: {
+    type: String,
+  },
+
+  experience: {
+    type: Number,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

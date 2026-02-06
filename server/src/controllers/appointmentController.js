@@ -1,21 +1,23 @@
 import Appointment from "../models/Appointment.js";
 
+// 1. CREATE APPOINTMENT - DEFAULT PENDING PAYMENT
 export const bookAppointment = async (req, res) => {
-
   try {
-    const { doctorId, date, time, reason } = req.body;
+    const { doctorId, date, time, reason, fees } = req.body;
 
     const appointment = await Appointment.create({
       userId: req.user.id,
       doctorId,
       date,
       time,
-      reason
+      reason,
+      fees,
+      status: "pending_payment",   // 🔥 IMPORTANT
     });
 
     res.json({
-      message: "Appointment Booked",
-      appointment
+      message: "Appointment Created - Pending Payment",
+      appointment,
     });
 
   } catch (err) {
@@ -23,14 +25,16 @@ export const bookAppointment = async (req, res) => {
   }
 };
 
+// 2. USER SIDE - SHOW ONLY CONFIRMED APPOINTMENTS
 export const getMyAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({
-      userId: req.user.id
+      userId: req.user.id,
+      status: "confirmed",        // 🔥 ONLY SUCCESSFUL PAYMENTS
     }).populate("doctorId", "name email");
 
     res.json({
-      appointments
+      appointments,
     });
 
   } catch (err) {
@@ -38,10 +42,12 @@ export const getMyAppointments = async (req, res) => {
   }
 };
 
+// 3. DOCTOR SIDE - SHOW ONLY CONFIRMED APPOINTMENTS
 export const getDoctorAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({
-      doctorId: req.user.id
+      doctorId: req.user.id,
+      status: "confirmed",       // 🔥 ONLY PAID APPOINTMENTS
     }).populate("userId", "name email");
 
     res.json({ appointments });
@@ -50,5 +56,3 @@ export const getDoctorAppointments = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-

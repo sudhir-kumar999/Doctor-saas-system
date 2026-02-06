@@ -1,11 +1,17 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link, useLocation } from "react-router-dom";
+import api from "../../api/api";
+import { toast } from "react-toastify";
+
 
 const DoctorDashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [fees, setFees] = useState(user?.fees || "");
+const [updating, setUpdating] = useState(false);
+
 
   const menuItems = [
     {
@@ -54,8 +60,31 @@ const DoctorDashboard = () => {
     }
   ];
 
+  const handleFeesUpdate = async (e) => {
+  e.preventDefault();
+
+  if (!fees || fees <= 0) {
+    toast.error("Please enter valid fees");
+    return;
+  }
+
+  try {
+    setUpdating(true);
+
+    await api.put("/api/user/update-fees", { fees });
+
+    toast.success("Consultation fees updated successfully");
+
+  } catch (error) {
+    toast.error(error.message || "Failed to update fees");
+  } finally {
+    setUpdating(false);
+  }
+};
+
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen mt-12 bg-gradient-to-br from-gray-50 to-gray-100">
 
       {/* Mobile Menu Button */}
       <button
@@ -176,6 +205,48 @@ const DoctorDashboard = () => {
                 <p className="font-semibold text-gray-900 capitalize">{user?.role}</p>
               </div>
             </div>
+            {/* Fees Update Section */}
+<div className="mt-8 border-t pt-6">
+
+  <div className="flex items-center space-x-3 mb-4">
+    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <h2 className="text-2xl font-bold text-gray-900">Consultation Fees</h2>
+  </div>
+
+  <form onSubmit={handleFeesUpdate} className="max-w-sm">
+    <label className="block text-gray-700 font-semibold mb-2">
+      Set Your Fees (₹)
+    </label>
+
+    <input
+      type="number"
+      value={fees}
+      onChange={(e) => setFees(e.target.value)}
+      className="w-full border-2 border-gray-300 focus:border-blue-500 rounded-lg px-4 py-2 mb-4"
+      placeholder="Enter consultation fees"
+    />
+
+    <button
+      type="submit"
+      disabled={updating}
+      className={`px-4 py-2 rounded-lg font-semibold transition-all
+        ${
+          updating
+            ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+            : "bg-blue-600 text-white hover:bg-blue-700"
+        }
+      `}
+    >
+      {updating ? "Updating..." : "Update Fees"}
+    </button>
+  </form>
+
+</div>
+
 
           </div>
 

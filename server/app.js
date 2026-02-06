@@ -9,7 +9,16 @@ import appointmentRoutes from "./src/routes/appointmentRoutes.js";
 import chatRoutes from "./src/routes/chatRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
 
+import paymentRoutes from "./src/routes/paymentRoutes.js";
+import webhookRoutes from "./src/routes/webhookRoutes.js";
+
+
 const app = express();
+app.use(
+  "/api/webhook",
+  express.raw({ type: "application/json" }),
+  webhookRoutes
+);
 
 // Needed for correct HTTPS / secure cookies behind Render proxy
 app.set("trust proxy", 1);
@@ -39,9 +48,20 @@ app.use(
 // Routes
 app.use("/api/chat", chatRoutes);
 app.use("/api/auth", authRoutes);
-// app.use("/api/user", userRoutes);
+app.use("/api/user", doctorRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/appointment", appointmentRoutes);
 app.use("/api/admin", adminRoutes);
+
+
+
+// app.use(express.json());
+
+// Baaki sab routes ke liye normal JSON parser
+// app.use(express.json());
+
+// ---------- NORMAL ROUTES ----------
+
+app.use("/api/payment", paymentRoutes);
 
 export default app;

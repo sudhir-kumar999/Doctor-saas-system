@@ -4,6 +4,8 @@ import app from "./app.js";
 import connectDB from "../server/src/config/db.js";
 import dotenv from "dotenv";
 import Chat from "./src/models/Chat.js";
+import express from "express"
+
 
 dotenv.config();
 connectDB();
@@ -12,13 +14,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://doctor-saas-systems.onrender.com",
+    origin:
+      "https://doctor-saas-systems.onrender.com" || "http://localhost:5173",
     credentials: true,
   },
 });
 
 io.on("connection", (socket) => {
-
   console.log("User Connected:", socket.id);
 
   socket.on("joinRoom", (room) => {
@@ -29,7 +31,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", async (data) => {
-
     try {
       // Basic validation
       if (!data.room || !data.senderId || !data.receiverId || !data.message) {
@@ -49,18 +50,17 @@ io.on("connection", (socket) => {
 
       // Emit to specific room only
       io.to(data.room).emit("receiveMessage", data);
-
     } catch (err) {
       console.log("Chat Save Error:", err.message);
     }
-
   });
 
   socket.on("disconnect", () => {
     console.log("User Disconnected:", socket.id);
   });
-
 });
+
+
 
 server.listen(5000, () => {
   console.log("Server running with Socket.io on port 5000");

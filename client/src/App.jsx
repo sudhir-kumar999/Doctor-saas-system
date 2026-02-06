@@ -23,6 +23,7 @@ import ManageUsers from "./pages/admin/ManageUsers";
 import ManageDoctors from "./pages/admin/ManageDoctors";
 import ManageAppointments from "./pages/admin/ManageAppointments";
 import NotFound from "./pages/NotFound";
+import DoctorProfile from "./pages/doctor/DoctorProfile";
 
 function App() {
   return (
@@ -108,6 +109,14 @@ function App() {
           element={
             <ProtectedRoute role="doctor">
               <Appointments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/doctor/profile"
+          element={
+            <ProtectedRoute role="doctor">
+              <DoctorProfile />
             </ProtectedRoute>
           }
         />
