@@ -37,23 +37,7 @@ export const handleWebhook = async (req, res) => {
     console.log("Event Type:", event.event);
 
     // PAYMENT SUCCESS
-    // if (event.event === "payment.captured") {
-    //   const razorpayPaymentId = event.payload.payment.entity.id;
-    //   const razorpayOrderId = event.payload.payment.entity.order_id;
-
-    //   console.log("Payment Captured:", razorpayOrderId);
-
-    //   const payment = await Payment.findOneAndUpdate(
-    //     { razorpayOrderId },
-    //     {
-    //       razorpayPaymentId,
-    //       status: "success",
-    //     },
-    //     { new: true }
-    //   );
-
-    //   console.log("Updated Payment:", payment);
-    // }
+   
 
     if (event.event === "payment.captured" || event.event === "order.paid") {
 
