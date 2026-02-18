@@ -248,12 +248,12 @@ const handleSubmit = async (e) => {
           </button>
         </form>
 
-        {report && (
-          <div className="mt-6 p-4 bg-gray-50 border rounded-lg">
+        {
+          <div className="flex justify-center flex-col mt-6 p-4 bg-gray-50 border rounded-lg">
             <h2 className="font-bold mb-2">AI Generated Report:</h2>
-            <p>{report}</p>
+            <button className="border p-2 rounded bg-blue-500 text-white" onClick={()=>navigate("/user/report")}>Click here to see All Report</button>
           </div>
-        )}
+        }
       </div>
     </div>
   );
