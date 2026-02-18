@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import api from "../../api/api";
+    import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Generateai_rpt=()=> {
 
@@ -15,6 +17,7 @@ const Generateai_rpt=()=> {
     description: "",
   });
 
+  const navigate=useNavigate()
 //   const [availableSymptoms, setAvailableSymptoms] = useState([]);
   const [customSymptom, setCustomSymptom] = useState("");
   const [loading, setLoading] = useState(false);
@@ -82,7 +85,6 @@ const Generateai_rpt=()=> {
 //     setLoading(false);
 //   };
 
-    import toast from "react-hot-toast";
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -101,7 +103,7 @@ const handleSubmit = async (e) => {
     toast.success("Report generated successfully 🎉");
 
     // agar redirect karna ho
-    // navigate("/my-reports");
+    navigate("/user/report");
 
   } catch (error) {
     console.error("Error generating report:", error);
