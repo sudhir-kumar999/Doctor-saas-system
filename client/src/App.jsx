@@ -24,6 +24,9 @@ import ManageDoctors from "./pages/admin/ManageDoctors";
 import ManageAppointments from "./pages/admin/ManageAppointments";
 import NotFound from "./pages/NotFound";
 import DoctorProfile from "./pages/doctor/DoctorProfile";
+import Generateai_rpt from "./pages/user/Generateai_rpt";
+import MyReports from "./pages/user/MyReports";
+import SingleReport from "./pages/user/SingleReport";
 
 function App() {
   return (
@@ -73,6 +76,33 @@ function App() {
           element={
             <ProtectedRoute role="user">
               <MyAppointments />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/user/ai-report"
+          element={
+            <ProtectedRoute role="user">
+              <Generateai_rpt />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/user/report"
+          element={
+            <ProtectedRoute role="user">
+              <MyReports />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/report/:id"
+          element={
+            <ProtectedRoute role="user">
+              <SingleReport />
             </ProtectedRoute>
           }
         />
