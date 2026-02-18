@@ -69,18 +69,51 @@ const Generateai_rpt=()=> {
     userId: user._id, // 🔥 yaha se bhej rahe ho
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    console.log(dataToSend)
-    const response = await api.post("/api/report/generate-report",dataToSend)
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     console.log(dataToSend)
+//     const response = await api.post("/api/report/generate-report",dataToSend)
         
 
-console.log(response)
-    // const data = await response.json();
-    // setReport(response.data.message);
+// console.log(response)
+//     // const data = await response.json();
+//     // setReport(response.data.message);
+//     setLoading(false);
+//   };
+
+    import toast from "react-hot-toast";
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    console.log("Sending Data:", dataToSend);
+
+    const response = await api.post(
+      "/api/report/generate-report",
+      dataToSend
+    );
+
+    console.log("Server Response:", response);
+
+    toast.success("Report generated successfully 🎉");
+
+    // agar redirect karna ho
+    // navigate("/my-reports");
+
+  } catch (error) {
+    console.error("Error generating report:", error);
+
+    toast.error(
+      error?.response?.data?.message || "Failed to generate report ❌"
+    );
+  } finally {
     setLoading(false);
-  };
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-6">

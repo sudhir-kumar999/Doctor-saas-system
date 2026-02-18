@@ -5,21 +5,21 @@ import { generateAIReport } from "../services/geminiService.js";
 export const generateReport=async(req,res)=>{
 
 
-//      try {
-//     const userId = req.body.userId; // frontend se bhejna hoga
-//     const aiReport = await generateAIReport(req.body);
+     try {
+    const userId = req.body.userId; // frontend se bhejna hoga
+    const aiReport = await generateAIReport(req.body);
 
-//     const newReport = await Report.create({
-//       ...req.body,
-//       userId,
-//       aiReport,
-//     });
+    const newReport = await Report.create({
+      ...req.body,
+      userId,
+      aiReport,
+    });
 
-//     res.json({ report: aiReport, reportId: newReport._id });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Failed to generate report" });
-//   }
+    res.json({ report: aiReport, reportId: newReport._id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to generate report" });
+  }
 }
 
 
