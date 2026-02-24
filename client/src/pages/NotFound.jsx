@@ -4,31 +4,32 @@ import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
 
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
 
-    // 🔥 Agar user logged in hai
+    // ✅ wait until auth check completes
+    if (loading) return;
+
+    // 🔥 Logged in user
     if (user) {
-
       if (user.role === "user") {
-        navigate("/user/dashboard");
-      }
+        navigate("/user/dashboard", { replace: true });
+      } 
       else if (user.role === "doctor") {
-        navigate("/doctor/dashboard");
-      }
+        navigate("/doctor/dashboard", { replace: true });
+      } 
       else if (user.role === "admin") {
-        navigate("/admin/dashboard");
+        navigate("/admin/dashboard", { replace: true });
       }
-
     } 
-    // 🔥 Agar login nahi hai
+    // 🔥 Not logged in → Home page
     else {
-      navigate("/signup");
+      navigate("/", { replace: true });
     }
 
-  }, [user, navigate]);
+  }, [user, loading, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
