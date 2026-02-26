@@ -14,6 +14,7 @@ import webhookRoutes from "./src/routes/webhookRoutes.js";
 
 
 const app = express();
+app.set("trust proxy", 1);
 app.use(
   "/api/webhook",
   express.raw({ type: "application/json" }),
