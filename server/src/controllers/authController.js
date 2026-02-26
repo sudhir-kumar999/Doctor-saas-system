@@ -72,26 +72,33 @@ export const login = async (req, res) => {
     );
 
     // Cookie options: different for local dev vs production
-    const isProd = process.env.NODE_ENV === "production";
+    // const isProd = process.env.NODE_ENV === "production";
 
-    const cookieOptions = {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    };
+    // const cookieOptions = {
+    //   httpOnly: true,
+    //   maxAge: 24 * 60 * 60 * 1000,
+    // };
 
-    if (isProd) {
-      // Render (HTTPS, cross-site)
-      cookieOptions.secure = true;
-      cookieOptions.sameSite = "none";
-      // Do NOT force domain; let browser use backend host
-    } else {
-      // Local dev
-      cookieOptions.secure = false;
-      cookieOptions.sameSite = "lax";
-    }
+    // if (isProd) {
+    //   // Render (HTTPS, cross-site)
+    //   cookieOptions.secure = true;
+    //   cookieOptions.sameSite = "none";
+    //   // Do NOT force domain; let browser use backend host
+    // } else {
+    //   // Local dev
+    //   cookieOptions.secure = false;
+    //   cookieOptions.sameSite = "lax";
+    // }
 
-    // Still set cookie (for web)
-    res.cookie("token", token, cookieOptions);
+    // // Still set cookie (for web)
+    // res.cookie("token", token, cookieOptions);
+
+    res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 24 * 60 * 60 * 1000,
+});
 
     // Also return token in body so client can store it if needed
     res.json({
@@ -108,20 +115,26 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   const isProd = process.env.NODE_ENV === "production";
 
-  const cookieOptions = {
-    httpOnly: true,
-    expires: new Date(0),
-  };
+  // const cookieOptions = {
+  //   httpOnly: true,
+  //   expires: new Date(0),
+  // };
 
-  if (isProd) {
-    cookieOptions.secure = true;
-    cookieOptions.sameSite = "none";
-  } else {
-    cookieOptions.secure = false;
-    cookieOptions.sameSite = "lax";
-  }
+  // if (isProd) {
+  //   cookieOptions.secure = true;
+  //   cookieOptions.sameSite = "none";
+  // } else {
+  //   cookieOptions.secure = false;
+  //   cookieOptions.sameSite = "lax";
+  // }
 
-  res.cookie("token", "", cookieOptions);
+  // res.cookie("token", "", cookieOptions);
+  res.cookie("token", "", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  expires: new Date(0),
+});
 
   res.json({ message: "Logout Success" });
 };
