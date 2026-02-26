@@ -11,6 +11,7 @@ import adminRoutes from "./src/routes/adminRoutes.js";
 
 import paymentRoutes from "./src/routes/paymentRoutes.js";
 import webhookRoutes from "./src/routes/webhookRoutes.js";
+import reportRoute from "./src/routes/reportRoutes.js";
 
 
 const app = express();
@@ -64,5 +65,8 @@ app.use("/api/admin", adminRoutes);
 // ---------- NORMAL ROUTES ----------
 
 app.use("/api/payment", paymentRoutes);
+
+
+app.use("/api/report",reportRoute)
 
 export default app;
